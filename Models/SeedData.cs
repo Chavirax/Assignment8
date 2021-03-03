@@ -130,7 +130,7 @@ namespace Assignment5.Models
                         Author = "Los Profetas",
                         Publisher = "The Church of Jesus Christ of Latter Day Saints",
                         Isbn = "978-0143105534",
-                        Category = "",
+                        Category = "Religion",
                         PageNumbers = 642,
                         Price = 3.10
                     },
@@ -140,7 +140,7 @@ namespace Assignment5.Models
                         Author = "Napoleon Hill",
                         Publisher = "The Napoleon Hill Foundation",
                         Isbn = "978-1402784538",
-                        Category = "Fiction, Thrillers",
+                        Category = "Self-Help",
                         PageNumbers = 493,
                         Price = 12.79
                     },
@@ -150,7 +150,7 @@ namespace Assignment5.Models
                         Author = "Dale Carnegie",
                         Publisher = "Simon & Schuster",
                         Isbn = "978-1442344815",
-                        Category = "Fiction, Thrillers",
+                        Category = "Self-Help",
                         PageNumbers = 272,
                         Price = 11.85
                     }

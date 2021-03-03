@@ -1,6 +1,7 @@
 using Assignment5.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -28,10 +29,16 @@ namespace Assignment5
             services.AddControllersWithViews();
             services.AddDbContext<CharityDbContext>(options =>
            {
-               options.UseSqlServer(Configuration["ConnectionStrings:BookCharityConnection"]); //passing configuration, where we are going to store the connection string
+               options.UseSqlite(Configuration["ConnectionStrings:BookCharityConnection"]); //passing configuration, where we are going to store the connection string
            });
 
             services.AddScoped<ICharityRepository, EFCharityRepository>();
+            
+            services.AddRazorPages(); //adds razor pages
+            services.AddDistributedMemoryCache(); //'this will get the cart info to stick
+            services.AddSession();
+            services.AddScoped<Cart>(sp => SessionCart.GetCart(sp));
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,17 +57,34 @@ namespace Assignment5
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.UseSession();
+
             app.UseRouting();
 
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute("catpage",
+                    "{category}/{pageNum:int}",
+                    new { Controller = "Home", action = "Index" });
+
+                endpoints.MapControllerRoute("page",
+                    "{pageNum:int}",
+                    new { Controller = "Home", action = "Index" });
+
+                endpoints.MapControllerRoute("category",
+                    "{category}",
+                    new { Controller = "Home", action = "Index", pageNum = 1 });
+
                 endpoints.MapControllerRoute( // this customises the display in the URL
                    "Pagination",
-                   "Books/P{page}", // e user can type /P2 to access the second page and /P3 to access the third page and so on.
+                   "Books/{pageNum}", // e user can type /P2 to access the second page and /P3 to access the third page and so on.
 
                    new { Controller = "Home", action = "Index" });
+
+                endpoints.MapDefaultControllerRoute(); // default index, if they don't type anything
+                endpoints.MapRazorPages(); //razor pages endopoint
 
                 endpoints.MapDefaultControllerRoute();
             });

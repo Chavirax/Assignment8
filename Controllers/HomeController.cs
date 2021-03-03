@@ -22,23 +22,26 @@ namespace Assignment5.Controllers
             _repository = repository;
         }
 
-        public IActionResult Index(int page =1)
+        public IActionResult Index(string category, int pageNum =1)
         {
-            return View( new ProjectListViewModel
+            return View(new ProjectListViewModel
             {
-                 Books = _repository.Books
-                 .OrderBy(p=> p.BookId)
-                 .Skip((page - 1)* PageSize)
+                Books = _repository.Books
+                 .Where(p => category == null || p.Category == category)
+                 .OrderBy(p => p.BookId)
+                 .Skip((pageNum - 1) * PageSize)
                  .Take(PageSize)
 
                  ,
-                 PagingInfo = new PagingInfo
-                 {
-                     CurrentPage = page,
-                     ItemsPerPage = PageSize,
-                     TotalNumItems = _repository.Books.Count()
-                 }
-            }); //This is what tells the view how many items to display 
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = pageNum,
+                    ItemsPerPage = PageSize,
+                    TotalNumItems = category == null ? _repository.Books.Count() :
+                        _repository.Books.Where(x => x.Category == category).Count() // this gets rid of the extra pages
+                },
+                Type = category
+            }); ; //This is what tells the view how many items to display 
         }
 
         public IActionResult Privacy()

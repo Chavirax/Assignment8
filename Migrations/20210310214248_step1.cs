@@ -2,7 +2,7 @@
 
 namespace Assignment5.Migrations
 {
-    public partial class PageNumData : Migration
+    public partial class step1 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

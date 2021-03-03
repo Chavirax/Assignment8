@@ -16,7 +16,7 @@ namespace Assignment5.Models
         public string Author { get; set; }
         [Required]
         public string Publisher { get; set; }
-        [DataType(DataType.Custom)]
+        //[DataType(DataType.Custom)]
         [Display(Name = "Isbn Number")]
         [Required(ErrorMessage = "ISBN Number Required!")]
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{10})$", // this is the format that will be required.

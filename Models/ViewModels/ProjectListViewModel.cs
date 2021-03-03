@@ -10,5 +10,7 @@ namespace Assignment5.Models.ViewModels
         public IEnumerable<Book> Books { get; set; } // There might be an issue with the data type projects
 
         public PagingInfo PagingInfo { get; set; }
+
+        public string Type { get; set; }
     }
 }
